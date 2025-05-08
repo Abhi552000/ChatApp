@@ -26,7 +26,7 @@ function User({ user }) {
       onClick={() => setSelectedConversation(user)}
     >
       <div className="flex space-x-4 px-8 py-3 hover:bg-slate-700 duration-300 cursor-pointer">
-        <div className={`avatar ${isOnline ? "online" : ""}`}>
+        <div className={`avatar flex ${isOnline ? "online" : ""}`}>
           <div className="w-14 h-14 flex items-center justify-center bg-gray-500 text-white font-semibold rounded-full text-xl">
             {getInitials(user.fullname)}
           </div>
