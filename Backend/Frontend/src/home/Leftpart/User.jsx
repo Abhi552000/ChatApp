@@ -25,15 +25,15 @@ function User({ user }) {
       }`}
       onClick={() => setSelectedConversation(user)}
     >
-      <div className="flex space-x-4 px-8 py-3 hover:bg-slate-700 duration-300 cursor-pointer">
-      <div className={`avatar ${isOnline ? "online" : ""}`}>
-        <div className="w-14 h-14 bg-gray-500 text-white font-semibold rounded-full text-xl flex items-center justify-center">
-          {getInitials(user.fullname)}
+      <div className="flex space-x-4 px-8 py-3 cursor-pointer">
+        <div className={`relative ${isOnline ? "before:content-[''] before:absolute before:bottom-0 before:right-0 before:w-3 before:h-3 before:bg-green-500 before:rounded-full before:border-2 before:border-white" : ""}`}>
+          <div className="w-14 h-14 rounded-full bg-gray-500 text-white font-semibold text-xl flex items-center justify-center">
+            {getInitials(user.fullname)}
+          </div>
         </div>
-      </div>
-        <div>
-          <h1 className="font-bold">{user.fullname}</h1>
-          <span>{user.email}</span>
+        <div className="flex flex-col justify-center">
+          <h1 className="font-bold text-white">{user.fullname}</h1>
+          <span className="text-sm text-gray-300">{user.email}</span>
         </div>
       </div>
     </div>
