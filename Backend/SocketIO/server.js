@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
   // send online users list
   io.emit("getOnlineUsers", Object.keys(users));
 
-  //  TYPING EVENT
+  // TYPING EVENT
   socket.on("typing", (receiverId) => {
     const receiverSocketId = users[receiverId];
 
@@ -43,12 +43,21 @@ io.on("connection", (socket) => {
     }
   });
 
-  //  STOP TYPING EVENT
+  // STOP TYPING EVENT
   socket.on("stopTyping", (receiverId) => {
     const receiverSocketId = users[receiverId];
 
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("stopTyping");
+    }
+  });
+
+  // NEW: MESSAGE SEEN EVENT
+  socket.on("messageSeen", (receiverId) => {
+    const receiverSocketId = users[receiverId];
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("messageSeen");
     }
   });
 

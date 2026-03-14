@@ -3,10 +3,16 @@ import Message from "./Message.jsx";
 import useGetMessage from "../../context/useGetMessage.js";
 import Loading from "../../components/Loading.jsx";
 import useGetSocketMessage from "../../context/useGetSocketMessage.js";
+import { useSocketContext } from "../../context/SocketContext.jsx";
+import useConversation from "../../statemanage/useConversation.js";
+
 
 function Messages() {
   const { loading, messages } = useGetMessage();
   useGetSocketMessage();
+
+  const { socket } = useSocketContext();
+  const { selectedConversation } = useConversation();
 
   const lastMsgRef = useRef();
 
@@ -16,6 +22,13 @@ function Messages() {
         behavior: "smooth",
       });
     }, 100);
+  }, [messages]);
+
+  // NEW: emit seen event
+  useEffect(() => {
+    if (!socket || !selectedConversation) return;
+
+    socket.emit("messageSeen", selectedConversation._id);
   }, [messages]);
 
   return (
