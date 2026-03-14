@@ -20,7 +20,6 @@ function Messages() {
 
   return (
     <div className="flex-1 overflow-y-auto p-2">
-
       {loading ? (
         <Loading />
       ) : messages.length > 0 ? (
@@ -34,7 +33,6 @@ function Messages() {
           <p>👋 Say Hi to start conversation</p>
         </div>
       )}
-
     </div>
   );
 }

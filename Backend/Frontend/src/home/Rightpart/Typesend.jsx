@@ -49,7 +49,6 @@ function Typesend() {
 
   return (
     <form onSubmit={handleSubmit} className="relative">
-
       {showEmoji && (
         <div className="absolute bottom-16 left-2 z-50">
           <EmojiPicker onEmojiClick={handleEmojiClick} />
@@ -57,7 +56,6 @@ function Typesend() {
       )}
 
       <div className="flex items-center gap-2 px-3 md:px-4 py-3 bg-gray-800">
-
         <button
           type="button"
           onClick={() => setShowEmoji(!showEmoji)}
@@ -97,7 +95,6 @@ function Typesend() {
         >
           <IoSend className="text-xl" />
         </button>
-
       </div>
     </form>
   );

@@ -38,7 +38,6 @@ function Chatuser() {
 
   return (
     <div className="flex items-center gap-4 px-4 py-3 bg-gray-700">
-
       <button
         className="md:hidden"
         onClick={() => setSelectedConversation(null)}
@@ -69,7 +68,6 @@ function Chatuser() {
           </span>
         )}
       </div>
-
     </div>
   );
 }
