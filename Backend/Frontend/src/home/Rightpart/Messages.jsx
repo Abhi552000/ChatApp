@@ -36,7 +36,7 @@ function Messages() {
     <div className="flex-1 overflow-y-auto p-2">
       {loading ? (
         <Loading />
-      ) : messages.length > 0 ? (
+      ) : Array.isArray(messages) && messages.length > 0 ? (
         messages.map((message) => (
           <div key={message._id} ref={lastMsgRef}>
             <Message message={message} />

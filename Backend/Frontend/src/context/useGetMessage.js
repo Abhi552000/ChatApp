@@ -13,7 +13,8 @@ const useGetMessage = () => {
           const res = await axios.get(
             `/api/message/get/${selectedConversation._id}`
           );
-          setMessage(res.data);
+          
+          setMessage(Array.isArray(res.data) ? res.data : []);
           setLoading(false);
         } catch (error) {
           console.log("Error in getting messages", error);
