@@ -20,6 +20,10 @@ const userSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    lastSeen: {
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     timestamps: true, //createdAt & updatedAt

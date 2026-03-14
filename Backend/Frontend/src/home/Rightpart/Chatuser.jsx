@@ -64,7 +64,14 @@ function Chatuser() {
           <span className="text-sm text-green-400">typing...</span>
         ) : (
           <span className="text-sm text-gray-300">
-            {isOnline ? "Online" : "Offline"}
+            {isOnline
+              ? "Online"
+              : `Last seen ${new Date(
+                  selectedConversation.lastSeen
+                ).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}`}
           </span>
         )}
       </div>

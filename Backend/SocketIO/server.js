@@ -1,9 +1,9 @@
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
+import User from "../models/user.model.js";
 
 const app = express();
-
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -22,7 +22,7 @@ export const getReceiverSocketId = (receiverId) => {
 
 // socket connection
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
+  console.log("User connected:", socket.id);
 
   const userId = socket.handshake.query.userId;
 
@@ -34,7 +34,6 @@ io.on("connection", (socket) => {
   // send online users list
   io.emit("getOnlineUsers", Object.keys(users));
 
-  // TYPING EVENT
   socket.on("typing", (receiverId) => {
     const receiverSocketId = users[receiverId];
 
@@ -43,7 +42,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // STOP TYPING EVENT
   socket.on("stopTyping", (receiverId) => {
     const receiverSocketId = users[receiverId];
 
@@ -52,20 +50,26 @@ io.on("connection", (socket) => {
     }
   });
 
-  // NEW: MESSAGE SEEN EVENT
-  socket.on("messageSeen", (receiverId) => {
-    const receiverSocketId = users[receiverId];
+  socket.on("messageSeen", ({ senderId }) => {
+    const senderSocketId = users[senderId];
 
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("messageSeen");
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("messageSeen", {
+        senderId,
+      });
     }
   });
 
-  // disconnect
-  socket.on("disconnect", () => {
-    console.log("a user disconnected", socket.id);
+  socket.on("disconnect", async () => {
+    console.log("User disconnected:", socket.id);
 
     delete users[userId];
+
+    if (userId) {
+      await User.findByIdAndUpdate(userId, {
+        lastSeen: new Date(),
+      });
+    }
 
     io.emit("getOnlineUsers", Object.keys(users));
   });

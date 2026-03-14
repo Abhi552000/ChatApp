@@ -1,6 +1,30 @@
 import { getReceiverSocketId, io } from "../SocketIO/server.js";
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+
+export const markMessagesAsSeen = async (req, res) => {
+  try {
+    const { id: senderId } = req.params;
+    const receiverId = req.user._id;
+
+    await Message.updateMany(
+      {
+        senderId: senderId,
+        receiverId: receiverId,
+        seen: false,
+      },
+      {
+        $set: { seen: true },
+      }
+    );
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.log("Error marking messages seen", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const sendMessage = async (req, res) => {
   try {
     const { message } = req.body;
@@ -39,15 +63,32 @@ export const sendMessage = async (req, res) => {
 export const getMessage = async (req, res) => {
   try {
     const { id: chatUser } = req.params;
-    const senderId = req.user._id; // current logged in user
+    const senderId = req.user._id;
+
     let conversation = await Conversation.findOne({
       members: { $all: [senderId, chatUser] },
     }).populate("messages");
+
     if (!conversation) {
       return res.status(201).json([]);
     }
-    const messages = conversation.messages;
-    res.status(201).json(messages);
+
+    await Message.updateMany(
+      {
+        senderId: chatUser,
+        receiverId: senderId,
+        seen: false,
+      },
+      {
+        $set: { seen: true },
+      }
+    );
+
+    const updatedConversation = await Conversation.findOne({
+      members: { $all: [senderId, chatUser] },
+    }).populate("messages");
+
+    res.status(200).json(updatedConversation.messages);
   } catch (error) {
     console.log("Error in getMessage", error);
     res.status(500).json({ error: "Internal server error" });

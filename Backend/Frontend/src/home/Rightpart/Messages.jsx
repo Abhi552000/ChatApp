@@ -6,7 +6,6 @@ import useGetSocketMessage from "../../context/useGetSocketMessage.js";
 import { useSocketContext } from "../../context/SocketContext.jsx";
 import useConversation from "../../statemanage/useConversation.js";
 
-
 function Messages() {
   const { loading, messages } = useGetMessage();
   useGetSocketMessage();
@@ -28,7 +27,9 @@ function Messages() {
   useEffect(() => {
     if (!socket || !selectedConversation) return;
 
-    socket.emit("messageSeen", selectedConversation._id);
+    socket.emit("messageSeen", {
+      senderId: selectedConversation._id,
+    });
   }, [messages]);
 
   return (
