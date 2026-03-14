@@ -1,23 +1,27 @@
 import React from "react";
 import Search from "./Search";
 import Users from "./Users";
- 
+import Logout from "../left1/Logout";
 
 function Left() {
   return (
-    <div className="w-[30%] bg-black text-gray-300">
-      <h1 className="font-bold text-3xl p-2 px-11">Chats</h1>
-    {/* <div className="w-full   bg-black text-gray-300"> */}
+    <div className="w-full md:w-full bg-black text-gray-300 h-screen flex flex-col">
+      {/* Header */}
+      <div className="flex justify-between items-center p-4 border-b border-gray-700">
+        <h1 className="font-bold text-2xl">Chats</h1>
+
+        {/* Logout button mobile */}
+        <div className="lg:hidden">
+          <Logout />
+        </div>
+      </div>
+
       <Search />
-      <div
-        className=" flex-1  overflow-y-auto"
-        style={{ minHeight: "calc(84vh - 10vh)" }}
-      >
+
+      <div className="flex-1 overflow-y-auto">
         <Users />
       </div>
-   
     </div>
-  
   );
 }
 

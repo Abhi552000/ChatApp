@@ -1,23 +1,29 @@
 import React from "react";
 import User from "./User";
 import useGetAllUsers from "../../context/useGetAllUsers";
+import useConversation from "../../statemanage/useConversation";
 
 function Users() {
-  const [allUsers, loading] = useGetAllUsers();
-  console.log(allUsers);
+  const [allUsers] = useGetAllUsers();
+  const { selectedConversation } = useConversation();
+
   return (
-    <div>
-      <h1 className="px-8 py-2 text-white font-semibold bg-slate-800 rounded-md">
+    <div className="flex flex-col h-full">
+
+      <h1 className="px-6 py-2 font-semibold bg-slate-800">
         Messages
       </h1>
-      <div
-        className="py-2 flex-1 overflow-y-auto"
-        style={{ maxHeight: "calc(84vh - 10vh)" }}
-      >
-        {allUsers.map((user, index) => (
-          <User key={index} user={user} />
+
+      <div className="flex-1 overflow-y-auto">
+        {allUsers.map((user) => (
+          <User
+            key={user._id}
+            user={user}
+            active={selectedConversation?._id === user._id}
+          />
         ))}
       </div>
+
     </div>
   );
 }

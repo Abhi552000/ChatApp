@@ -1,15 +1,30 @@
-import React from "react";
-import useConversation from "../../statemanage/useConversation.js";
-import { useSocketContext } from "../../context/SocketContext.jsx";
-import { CiMenuFries } from "react-icons/ci";
+import React, { useEffect, useState } from "react";
+import useConversation from "../../statemanage/useConversation";
+import { useSocketContext } from "../../context/SocketContext";
+import { IoArrowBack } from "react-icons/io5";
 
 function Chatuser() {
-  const { selectedConversation } = useConversation();
-  const { onlineUsers } = useSocketContext();
+  const { selectedConversation, setSelectedConversation } = useConversation();
+  const { onlineUsers, socket } = useSocketContext();
 
-  const getOnlineUsersStatus = (userId) => {
-    return onlineUsers.includes(userId) ? "Online" : "Offline";
-  };
+  const [isTyping, setIsTyping] = useState(false);
+
+  const isOnline = onlineUsers.includes(selectedConversation._id);
+
+  useEffect(() => {
+    socket.on("typing", () => {
+      setIsTyping(true);
+    });
+
+    socket.on("stopTyping", () => {
+      setIsTyping(false);
+    });
+
+    return () => {
+      socket.off("typing");
+      socket.off("stopTyping");
+    };
+  }, [socket]);
 
   const getInitials = (name) => {
     if (!name) return "";
@@ -22,18 +37,39 @@ function Chatuser() {
   };
 
   return (
-    <div className="pl-5 pt-5 h-[12vh] flex space-x-4 bg-gray-700 hover:bg-gray-600 duration-300 items-center">
-      <div>
-        <div className="w-14 h-14 flex items-center justify-center bg-gray-500 text-white font-semibold rounded-full text-xl">
+    <div className="flex items-center gap-4 px-4 py-3 bg-gray-700">
+
+      <button
+        className="md:hidden"
+        onClick={() => setSelectedConversation(null)}
+      >
+        <IoArrowBack className="text-xl text-white" />
+      </button>
+
+      <div className="relative">
+        <div className="w-12 h-12 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold">
           {getInitials(selectedConversation.fullname)}
         </div>
+
+        {isOnline && (
+          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border border-white"></span>
+        )}
       </div>
+
       <div>
-        <h1 className="text-xl text-white">{selectedConversation.fullname}</h1>
-        <span className="text-sm text-gray-300">
-          {getOnlineUsersStatus(selectedConversation._id)}
-        </span>
+        <h1 className="text-white font-semibold">
+          {selectedConversation.fullname}
+        </h1>
+
+        {isTyping ? (
+          <span className="text-sm text-green-400">typing...</span>
+        ) : (
+          <span className="text-sm text-gray-300">
+            {isOnline ? "Online" : "Offline"}
+          </span>
+        )}
       </div>
+
     </div>
   );
 }
