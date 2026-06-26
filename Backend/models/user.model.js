@@ -20,6 +20,24 @@ const userSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    avatar: {
+      type: String,
+      default: "",
+    },
+    about: {
+      type: String,
+      default: "Hey there! I am using Messenger.",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    otp: {
+      type: String,
+    },
+    otpExpiry: {
+      type: Date,
+    },
     lastSeen: {
       type: Date,
       default: Date.now,

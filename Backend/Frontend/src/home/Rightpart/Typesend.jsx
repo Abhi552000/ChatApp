@@ -55,11 +55,11 @@ function Typesend() {
         </div>
       )}
 
-      <div className="flex items-center gap-2 px-3 md:px-4 py-3 bg-gray-800">
+      <div className="flex items-center gap-2 px-3 md:px-4 py-3 bg-themeBgHeader border-t border-themeBorder">
         <button
           type="button"
           onClick={() => setShowEmoji(!showEmoji)}
-          className="text-2xl text-gray-300 hover:text-yellow-400"
+          className="text-2xl text-themeTextSecondary hover:text-yellow-500 transition-colors"
         >
           <BsEmojiSmile />
         </button>
@@ -72,10 +72,10 @@ function Typesend() {
           onChange={handleTyping}
           className="
             flex-1
-            bg-slate-900
-            text-white
-            placeholder-gray-400
-            border border-gray-700
+            bg-themeBgInput
+            text-themeTextPrimary
+            placeholder-themeTextSecondary
+            border border-themeBorder
             rounded-lg
             px-3 py-2
             outline-none

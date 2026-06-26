@@ -26,10 +26,10 @@ function Logout() {
   };
 
   return (
-    <div className="hidden md:flex w-[70px] bg-slate-950 text-white flex-col justify-end">
+    <div className="hidden md:flex w-[70px] bg-themeBgHeader text-themeTextPrimary flex-col justify-end border-r border-themeBorder">
       <div className="p-3">
         <button onClick={handleLogout}>
-          <TbLogout2 className="text-4xl p-2 hover:bg-gray-600 rounded-lg duration-300" />
+          <TbLogout2 className="text-4xl p-2 hover:bg-themeBgHover rounded-lg duration-300 text-themeTextSecondary hover:text-themeTextPrimary" />
         </button>
       </div>
     </div>

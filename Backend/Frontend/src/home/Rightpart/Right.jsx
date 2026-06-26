@@ -10,7 +10,7 @@ function Right() {
   const { selectedConversation } = useConversation();
 
   return (
-    <div className="w-full h-screen flex flex-col bg-slate-900">
+    <div className="w-full h-screen flex flex-col bg-themeBgPrimary text-themeTextPrimary">
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
@@ -34,12 +34,12 @@ const NoChatSelected = () => {
   const [authUser] = useAuth();
 
   return (
-    <div className="flex items-center justify-center h-full text-center px-4">
-      <h1>
+    <div className="flex items-center justify-center h-full text-center px-4 bg-themeBgPrimary text-themeTextPrimary">
+      <h1 className="text-lg md:text-xl text-themeTextSecondary">
         Welcome{" "}
-        <span className="font-semibold text-xl">{authUser.user.fullname}</span>
+        <span className="font-bold text-themeTextPrimary">{authUser?.user?.fullname}</span>
         <br />
-        No chat selected
+        <span className="text-sm font-normal">Select a conversation to start messaging</span>
       </h1>
     </div>
   );

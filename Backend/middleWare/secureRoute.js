@@ -15,6 +15,9 @@ const secureRoute = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ error: "No user found" });
     }
+    if (!user.isVerified) {
+      return res.status(401).json({ error: "Email not verified. Please verify your email first." });
+    }
     req.user = user;
     next();
   } catch (error) {

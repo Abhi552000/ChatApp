@@ -15,7 +15,11 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socket = io("https://chatterbox-9aw1.onrender.com", {
+      const socketUrl = import.meta.env.MODE === "development"
+        ? "http://localhost:5002"
+        : "https://chatterbox-9aw1.onrender.com";
+
+      const socket = io(socketUrl, {
         query: {
           userId: authUser.user._id,
         },

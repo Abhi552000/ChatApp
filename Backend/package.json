@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
-    "dev":"nodemon index.js",
-    "build":"npm install && npm install --prefix Frontend && npm run build --prefix Frontend"
+    "dev": "nodemon index.js",
+    "build": "npm install && npm install --prefix Frontend && npm run build --prefix Frontend"
   },
   "keywords": [
     "MERN"
@@ -23,6 +23,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
+    "nodemailer": "^9.0.1",
     "nodemon": "^3.1.9",
     "socket.io": "^4.8.1"
   }

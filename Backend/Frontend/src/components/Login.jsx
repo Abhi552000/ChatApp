@@ -31,7 +31,19 @@ function Login() {
       })
       .catch((error) => {
         if (error.response) {
-          toast.error("Error: " + error.response.data.error);
+          if (error.response.data.unverified) {
+            const unverifiedData = {
+              message: "Unverified",
+              user: error.response.data.user
+            };
+            localStorage.setItem("ChatApp", JSON.stringify(unverifiedData));
+            setAuthUser(unverifiedData);
+            toast.error(error.response.data.error);
+          } else {
+            toast.error("Error: " + error.response.data.error);
+          }
+        } else {
+          toast.error("Something went wrong");
         }
       });
   };

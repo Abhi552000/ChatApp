@@ -1,48 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-import useGetAllUsers from "../../context/useGetAllUsers";
-import useConversation from "../../statemanage/useConversation";
-import toast from "react-hot-toast";
 
-function Search() {
-  const [search, setSearch] = useState("");
-  const [allUsers] = useGetAllUsers();
-  const { setSelectedConversation } = useConversation();
+function Search({ searchQuery, setSearchQuery }) {
+  const [inputValue, setInputValue] = useState(searchQuery);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchQuery(inputValue);
+    }, 300); // 300ms debounce time
 
-    if (!search) return;
-
-    const conversation = allUsers.find((user) =>
-      user.fullname?.toLowerCase().includes(search.toLowerCase())
-    );
-
-    if (conversation) {
-      setSelectedConversation(conversation);
-      setSearch("");
-    } else {
-      toast.error("User not found");
-    }
-  };
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue, setSearchQuery]);
 
   return (
     <div className="px-4 py-3">
-      <form onSubmit={handleSubmit}>
-        <div className="flex gap-2">
+      <div className="flex gap-2">
+        <div className="relative flex-1">
           <input
             type="text"
-            className="flex-1 bg-slate-900 border border-gray-700 rounded-lg px-3 py-2 outline-none"
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-themeBgInput border border-themeBorder rounded-lg pl-10 pr-3 py-2 outline-none text-themeTextPrimary placeholder-themeTextSecondary focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
+            placeholder="Search users..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
           />
-
-          <button>
-              <FaSearch className="text-4xl p-2 hover:bg-gray-600 rounded-full duration-300" />
-          </button>
+          <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-themeTextSecondary text-sm" />
         </div>
-      </form>
+      </div>
     </div>
   );
 }

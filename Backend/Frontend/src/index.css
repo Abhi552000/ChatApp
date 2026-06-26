@@ -4,6 +4,36 @@
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /* Default Theme (Dark) Variables - Premium Slate/Indigo Dark */
+  --bg-primary: #090D16;
+  --bg-secondary: #111827;
+  --bg-header: #0F172A;
+  --bg-hover: #1F2937;
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --border-color: #161B26;
+  --bg-input: #1F2937;
+  --bg-chat-user: #1F2937;
+  --bg-message-sent: #2563EB;
+  --bg-message-received: #1F2937;
+  --text-message: #FFFFFF;
+}
+
+[data-theme="light"] {
+  /* Light Theme Variables - Premium Discord/Slack Inspired Light Mode */
+  --bg-primary: #F5F7FB;
+  --bg-secondary: #FFFFFF;
+  --bg-header: #FFFFFF;
+  --bg-hover: #F1F5F9;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --border-color: #E2E8F0;
+  --bg-input: #F1F5F9;
+  --bg-chat-user: #FFFFFF;
+  --bg-message-sent: #2563EB;
+  --bg-message-received: #E2E8F0;
+  --text-message: #FFFFFF;
 }
 
 .flex-1::-webkit-scrollbar {

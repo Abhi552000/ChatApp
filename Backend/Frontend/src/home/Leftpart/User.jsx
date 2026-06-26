@@ -20,20 +20,24 @@ function User({ user }) {
 
   return (
     <div
-      className={`hover:bg-slate-600 duration-300 ${
-        isSelected ? "bg-slate-700" : ""
+      className={`hover:bg-themeBgHover duration-300 ${
+        isSelected ? "bg-themeBgHover" : ""
       }`}
       onClick={() => setSelectedConversation(user)}
     >
       <div className="flex space-x-4 px-8 py-3 cursor-pointer">
-        <div className={`relative ${isOnline ? "before:content-[''] before:absolute before:bottom-0 before:right-0 before:w-3 before:h-3 before:bg-green-500 before:rounded-full before:border-2 before:border-white" : ""}`}>
-          <div className="w-14 h-14 rounded-full bg-gray-500 text-white font-semibold text-xl flex items-center justify-center">
-            {getInitials(user.fullname)}
+        <div className={`relative ${isOnline ? "before:content-[''] before:absolute before:bottom-0 before:right-0 before:w-3 before:h-3 before:bg-green-500 before:rounded-full before:border-2 before:border-themeBgSecondary" : ""}`}>
+          <div className="w-14 h-14 rounded-full overflow-hidden bg-themeBgHeader text-themeTextPrimary font-semibold text-xl flex items-center justify-center border border-themeBorder">
+            {user.avatar ? (
+              <img src={user.avatar} alt={user.fullname} className="w-full h-full object-cover" />
+            ) : (
+              getInitials(user.fullname)
+            )}
           </div>
         </div>
         <div className="flex flex-col justify-center">
-          <h1 className="font-bold text-white">{user.fullname}</h1>
-          <span className="text-sm text-gray-300">{user.email}</span>
+          <h1 className="font-bold text-themeTextPrimary">{user.fullname}</h1>
+          <span className="text-sm text-themeTextSecondary">{user.email}</span>
         </div>
       </div>
     </div>

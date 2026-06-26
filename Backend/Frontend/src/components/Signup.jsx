@@ -32,7 +32,7 @@ function Signup() {
       .post("/api/user/signup", userInfo)
       .then((response) => {
         if (response.data) {
-          toast.success("Signup successful");
+          toast.success("Signup successful. Verification code sent!");
         }
         localStorage.setItem("ChatApp", JSON.stringify(response.data));
         setAuthUser(response.data);

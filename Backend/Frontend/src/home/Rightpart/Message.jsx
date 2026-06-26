@@ -5,7 +5,9 @@ function Message({ message }) {
   const itsMe = message.senderId === authUser.user._id;
 
   const chatName = itsMe ? "chat-end" : "chat-start";
-  const chatColor = itsMe ? "bg-blue-500" : "bg-green-500";
+  const chatColor = itsMe 
+    ? "bg-themeBgMsgSent text-themeTextMsg shadow-sm" 
+    : "bg-themeBgMsgRecv text-themeTextPrimary shadow-sm";
 
   const createdAt = new Date(message.createdAt);
   const formattedTime = createdAt.toLocaleTimeString([], {
@@ -14,24 +16,20 @@ function Message({ message }) {
   });
 
   return (
-    <div className={`chat ${chatName}`}>
-      <div className={`chat-bubble text-white ${chatColor}`}>
-        {message.message}
-      </div>
-
-      <div className="chat-footer flex items-center gap-1 text-xs text-gray-400">
-        {formattedTime}
-
-        {/* show status only for sender */}
-        {itsMe && (
-          <span
-            className={`ml-1 ${
-              message.seen ? "text-blue-400" : "text-gray-400"
-            }`}
-          >
-            {message.seen ? "✓✓" : "✓"}
-          </span>
-        )}
+    <div className={`chat ${chatName} mb-1`}>
+      <div className={`chat-bubble ${chatColor} px-3 py-1.5 max-w-[70%] rounded-2xl flex flex-col relative min-w-[85px]`}>
+        <span className="text-[14.5px] leading-snug break-words pb-2.5 pr-12 text-current">
+          {message.message}
+        </span>
+        
+        <div className="absolute bottom-1 right-2 flex items-center space-x-1 text-[9.5px] opacity-70 select-none">
+          <span>{formattedTime}</span>
+          {itsMe && (
+            <span className={message.seen ? "text-blue-400 font-bold" : "text-gray-400"}>
+              {message.seen ? "✓✓" : "✓"}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
