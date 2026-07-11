@@ -22,18 +22,19 @@ function User({ user }) {
     setSelectedConversation(user);
     // Reset unread count for this user locally in the list
     const { setAllUsers } = useConversation.getState();
-    setAllUsers((prevUsers) =>
-      prevUsers.map((u) =>
-        u._id === user._id ? { ...u, unreadCount: 0 } : u
-      )
-    );
+    setAllUsers((prevUsers) => {
+      if (!Array.isArray(prevUsers)) return [];
+      return prevUsers.map((u) =>
+        String(u._id) === String(user._id) ? { ...u, unreadCount: 0 } : u
+      );
+    });
   };
 
   const getLastMessageText = () => {
     if (!user.lastMessage) return user.email; // Fallback to email if no chat history
     
     // Check if it's our own message
-    const isMe = user.lastMessage.senderId !== user._id;
+    const isMe = String(user.lastMessage.senderId) !== String(user._id);
     const prefix = isMe ? "You: " : "";
     
     const msgText = user.lastMessage.message;
