@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import Logout from "./home/left1/Logout";
 import useConversation from "./statemanage/useConversation";
 import { Navigate, Route, Routes } from "react-router-dom";
+import useGetSocketMessage from "./context/useGetSocketMessage";
 
 function ChatLayout() {
   const { selectedConversation } = useConversation();
@@ -50,6 +51,7 @@ function ChatLayout() {
 
 function App() {
   const [authUser] = useAuth();
+  useGetSocketMessage();
 
   React.useEffect(() => {
     const currentTheme = localStorage.getItem("theme") || "dark";

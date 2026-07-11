@@ -15,6 +15,15 @@ const useConversation = create((set) => ({
           ? messages(state.messages)
           : messages,
     })),
+
+  allUsers: [],
+  setAllUsers: (allUsers) =>
+    set((state) => ({
+      allUsers:
+        typeof allUsers === "function"
+          ? allUsers(state.allUsers)
+          : allUsers,
+    })),
 }));
 
 export default useConversation;
