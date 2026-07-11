@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import User from "../models/user.model.js";
+import Message from "../models/message.model.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -50,13 +51,23 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("messageSeen", ({ senderId }) => {
-    const senderSocketId = users[senderId];
+  socket.on("messageSeen", async ({ senderId }) => {
+    try {
+      if (userId && senderId) {
+        await Message.updateMany(
+          { senderId: senderId, receiverId: userId, seen: false },
+          { $set: { seen: true } }
+        );
 
-    if (senderSocketId) {
-      io.to(senderSocketId).emit("messageSeen", {
-        senderId,
-      });
+        const senderSocketId = users[senderId];
+        if (senderSocketId) {
+          io.to(senderSocketId).emit("messageSeen", {
+            senderId: userId,
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Error in messageSeen socket event:", err);
     }
   });
 

@@ -2,6 +2,8 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import createTokenAndSaveCookie from "../jwt/generateToken.js";
 import { sendOTPEmail } from "../services/email.service.js";
+import Conversation from "../models/conversation.model.js";
+import Message from "../models/message.model.js";
 
 
 export const signup = async (req, res) => {
@@ -122,13 +124,45 @@ export const logout = async (req, res) => {
 
 export const allUsers = async (req, res) => {
   try {
-    const loggedInUser = req.user._id;
-    const filteredUsers = await User.find({
-      _id: { $ne: loggedInUser },
-    }).select("-password");
-    res.status(201).json(filteredUsers);
+    const loggedInUserId = req.user._id;
+
+    // Find all users except current
+    const users = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
+
+    // Fetch last message and unread count for each user
+    const usersWithChatInfo = await Promise.all(
+      users.map(async (user) => {
+        // Find the conversation between loggedInUser and this user
+        const conversation = await Conversation.findOne({
+          members: { $all: [loggedInUserId, user._id] },
+        }).populate({
+          path: "messages",
+          options: { sort: { createdAt: -1 }, limit: 1 } // Get only the latest message
+        });
+
+        const lastMessage = conversation && conversation.messages.length > 0 
+          ? conversation.messages[0] 
+          : null;
+
+        // Count unread messages sent by this user to the loggedInUser
+        const unreadCount = await Message.countDocuments({
+          senderId: user._id,
+          receiverId: loggedInUserId,
+          seen: false,
+        });
+
+        return {
+          ...user.toObject(),
+          lastMessage,
+          unreadCount,
+        };
+      })
+    );
+
+    res.status(201).json(usersWithChatInfo);
   } catch (error) {
     console.log("Error in allUsers Controller: " + error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

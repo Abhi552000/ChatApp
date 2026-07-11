@@ -11,6 +11,13 @@ function Users({ searchQuery = "" }) {
     user.fullname?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Sort chats: those with the most recent messages go to the top
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    const timeA = a.lastMessage ? new Date(a.lastMessage.createdAt).getTime() : 0;
+    const timeB = b.lastMessage ? new Date(b.lastMessage.createdAt).getTime() : 0;
+    return timeB - timeA; // Descending order (latest message on top)
+  });
+
   return (
     <div className="flex flex-col h-full">
       <h1 className="px-6 py-2 font-semibold bg-themeBgHeader text-themeTextPrimary">
@@ -18,8 +25,8 @@ function Users({ searchQuery = "" }) {
       </h1>
 
       <div className="flex-1 overflow-y-auto">
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
+        {sortedUsers.length > 0 ? (
+          sortedUsers.map((user) => (
             <User
               key={user._id}
               user={user}
