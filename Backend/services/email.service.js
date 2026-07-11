@@ -55,6 +55,9 @@ export const sendOTPEmail = async (email, fullname, otp) => {
           user: emailUser,
           pass: emailPass,
         },
+        connectionTimeout: 5000, // 5 seconds
+        greetingTimeout: 5000,   // 5 seconds
+        socketTimeout: 5000,     // 5 seconds
       });
 
       const mailOptions = {
