@@ -16,13 +16,14 @@ const useSendMessage = () => {
       setMessage((prev) => [...prev, newMessage]);
 
       // Update lastMessage inside allUsers list in Zustand
-      setAllUsers((prevUsers) =>
-        prevUsers.map((u) =>
-          u._id === selectedConversation._id
+      setAllUsers((prevUsers) => {
+        if (!Array.isArray(prevUsers)) return [];
+        return prevUsers.map((u) =>
+          String(u._id) === String(selectedConversation._id)
             ? { ...u, lastMessage: newMessage }
             : u
-        )
-      );
+        );
+      });
 
       setLoading(false);
     } catch (error) {
