@@ -32,7 +32,9 @@ export const signup = async (req, res) => {
     await newUser.save();
 
     if (newUser) {
-      await sendOTPEmail(email, fullname, otp);
+      sendOTPEmail(email, fullname, otp).catch((error) => {
+        console.error("Background signup OTP email error:", error);
+      });
       res.status(201).json({
         message: "User registered successfully. Please verify your email.",
         user: {
@@ -73,7 +75,9 @@ export const login = async (req, res) => {
       user.otpExpiry = otpExpiry;
       await user.save();
 
-      await sendOTPEmail(user.email, user.fullname, otp);
+      sendOTPEmail(user.email, user.fullname, otp).catch((error) => {
+        console.error("Background login OTP email error:", error);
+      });
 
       return res.status(400).json({
         error: "Email not verified. A verification code has been sent to your email.",
@@ -216,7 +220,9 @@ export const resendOTP = async (req, res) => {
     user.otpExpiry = otpExpiry;
     await user.save();
 
-    await sendOTPEmail(user.email, user.fullname, otp);
+    sendOTPEmail(user.email, user.fullname, otp).catch((error) => {
+      console.error("Background resend OTP email error:", error);
+    });
 
     res.status(200).json({ message: "Verification code resent successfully" });
   } catch (error) {
