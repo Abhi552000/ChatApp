@@ -5,6 +5,12 @@ export const sendOTPEmail = async (email, fullname, otp) => {
   const emailUser = process.env.EMAIL_USER;
   const emailPass = process.env.EMAIL_PASS;
 
+  // Sanitize input email and fullname to prevent casing and trailing whitespace issues
+  const sanitizedEmail = email ? email.trim().toLowerCase() : "";
+  const sanitizedFullname = fullname ? fullname.trim() : "";
+
+  console.log(`[sendOTPEmail] Attempting to send OTP: "${otp}" to "${sanitizedEmail}" (Fullname: "${sanitizedFullname}")`);
+
   if (resendApiKey) {
     try {
       const response = await fetch("https://api.resend.com/emails", {
@@ -15,12 +21,12 @@ export const sendOTPEmail = async (email, fullname, otp) => {
         },
         body: JSON.stringify({
           from: "Messenger App <onboarding@resend.dev>",
-          to: email,
+          to: sanitizedEmail,
           subject: "Verify Your Email - Messenger App",
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px;">
               <h2 style="color: #2563eb; text-align: center;">Welcome to Messenger!</h2>
-              <p>Hi <strong>${fullname}</strong>,</p>
+              <p>Hi <strong>${sanitizedFullname}</strong>,</p>
               <p>Thank you for registering. Please verify your email address by entering the One-Time Password (OTP) code below:</p>
               <div style="text-align: center; margin: 30px 0;">
                 <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #1e293b; background-color: #f1f5f9; padding: 10px 20px; border-radius: 8px;">
@@ -37,7 +43,7 @@ export const sendOTPEmail = async (email, fullname, otp) => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log(`Verification OTP email sent via Resend API to ${email}`);
+        console.log(`Verification OTP email sent via Resend API to ${sanitizedEmail}`);
         return true;
       }
       console.error("Resend API error response:", data);
@@ -62,12 +68,12 @@ export const sendOTPEmail = async (email, fullname, otp) => {
 
       const mailOptions = {
         from: `"Messenger App" <${emailUser}>`,
-        to: email,
+        to: sanitizedEmail,
         subject: "Verify Your Email - Messenger App",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px;">
             <h2 style="color: #2563eb; text-align: center;">Welcome to Messenger!</h2>
-            <p>Hi <strong>${fullname}</strong>,</p>
+            <p>Hi <strong>${sanitizedFullname}</strong>,</p>
             <p>Thank you for registering. Please verify your email address by entering the One-Time Password (OTP) code below:</p>
             <div style="text-align: center; margin: 30px 0;">
               <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #1e293b; background-color: #f1f5f9; padding: 10px 20px; border-radius: 8px;">
@@ -82,7 +88,7 @@ export const sendOTPEmail = async (email, fullname, otp) => {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log(`Verification OTP email sent via SMTP to ${email}`);
+      console.log(`Verification OTP email sent via SMTP to ${sanitizedEmail}`);
       return true;
     } catch (error) {
       console.error("Error sending verification email via SMTP:", error);
@@ -91,7 +97,7 @@ export const sendOTPEmail = async (email, fullname, otp) => {
 
   // 3. Dev Fallback: If no API key and no SMTP credentials, or if both failed
   console.log(`\n==================================================`);
-  console.log(`[DEV FALLBACK] Verification OTP for ${email} (${fullname}) is: ${otp}`);
+  console.log(`[DEV FALLBACK] Verification OTP for ${sanitizedEmail} (${sanitizedFullname}) is: ${otp}`);
   console.log(`==================================================\n`);
   return true;
 };

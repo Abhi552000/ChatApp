@@ -32,7 +32,7 @@ export const signup = async (req, res) => {
     await newUser.save();
 
     if (newUser) {
-      sendOTPEmail(email, fullname, otp).catch((error) => {
+      sendOTPEmail(newUser.email, newUser.fullname, otp).catch((error) => {
         console.error("Background signup OTP email error:", error);
       });
       res.status(201).json({
