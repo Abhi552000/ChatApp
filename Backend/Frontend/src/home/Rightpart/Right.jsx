@@ -16,11 +16,7 @@ function Right() {
       ) : (
         <>
           <Chatuser />
-
-          <div className="flex-1 overflow-y-auto">
-            <Messages />
-          </div>
-
+          <Messages />
           <Typesend />
         </>
       )}
@@ -37,9 +33,13 @@ const NoChatSelected = () => {
     <div className="flex items-center justify-center h-full text-center px-4 bg-themeBgPrimary text-themeTextPrimary">
       <h1 className="text-lg md:text-xl text-themeTextSecondary">
         Welcome{" "}
-        <span className="font-bold text-themeTextPrimary">{authUser?.user?.fullname}</span>
+        <span className="font-bold text-themeTextPrimary">
+          {authUser?.user?.fullname}
+        </span>
         <br />
-        <span className="text-sm font-normal">Select a conversation to start messaging</span>
+        <span className="text-sm font-normal">
+          Select a conversation to start messaging
+        </span>
       </h1>
     </div>
   );

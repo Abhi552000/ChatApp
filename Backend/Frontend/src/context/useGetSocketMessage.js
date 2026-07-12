@@ -12,12 +12,15 @@ const useGetSocketMessage = () => {
 
     socket.on("newMessage", (newMessage) => {
       console.log("[Socket] Received newMessage:", newMessage);
-      
+
       // Safe audio playback in case of autoplay restrictions
       try {
         const notification = new Audio(sound);
         notification.play().catch((err) => {
-          console.warn("[Socket] Audio autoplay blocked or failed:", err.message);
+          console.warn(
+            "[Socket] Audio autoplay blocked or failed:",
+            err.message
+          );
         });
       } catch (audioErr) {
         console.warn("[Socket] Failed to create Audio object:", audioErr);
@@ -27,7 +30,9 @@ const useGetSocketMessage = () => {
       const currentSelected = useConversation.getState().selectedConversation;
       console.log("[Socket] Current selected conversation:", currentSelected);
 
-      const isSenderActive = currentSelected && String(currentSelected._id) === String(newMessage.senderId);
+      const isSenderActive =
+        currentSelected &&
+        String(currentSelected._id) === String(newMessage.senderId);
 
       // Only append to screen messages if the sender matches the active chat
       if (isSenderActive) {
@@ -39,7 +44,12 @@ const useGetSocketMessage = () => {
         // Emit seen event back via socket since we are viewing the chat
         socket.emit("messageSeen", { senderId: newMessage.senderId });
       } else {
-        console.log("[Socket] Message not for active conversation. active:", currentSelected?._id, "sender:", newMessage.senderId);
+        console.log(
+          "[Socket] Message not for active conversation. active:",
+          currentSelected?._id,
+          "sender:",
+          newMessage.senderId
+        );
       }
 
       // Update that user's unread count and lastMessage in the allUsers list
@@ -59,13 +69,18 @@ const useGetSocketMessage = () => {
     });
 
     socket.on("messageSeen", ({ senderId }) => {
-      console.log("[Socket] Received messageSeen event for senderId:", senderId);
-      
+      console.log(
+        "[Socket] Received messageSeen event for senderId:",
+        senderId
+      );
+
       // Mark our sent messages to this user as seen (senderId matches the receiver of our messages)
       setMessage((prevMessages) => {
         if (!Array.isArray(prevMessages)) return [];
         return prevMessages.map((msg) =>
-          String(msg.senderId) !== String(senderId) ? { ...msg, seen: true } : msg
+          String(msg.senderId) !== String(senderId)
+            ? { ...msg, seen: true }
+            : msg
         );
       });
 
@@ -73,7 +88,11 @@ const useGetSocketMessage = () => {
       setAllUsers((prevUsers) => {
         if (!Array.isArray(prevUsers)) return [];
         return prevUsers.map((u) => {
-          if (String(u._id) === String(senderId) && u.lastMessage && String(u.lastMessage.senderId) !== String(senderId)) {
+          if (
+            String(u._id) === String(senderId) &&
+            u.lastMessage &&
+            String(u.lastMessage.senderId) !== String(senderId)
+          ) {
             return {
               ...u,
               lastMessage: { ...u.lastMessage, seen: true },

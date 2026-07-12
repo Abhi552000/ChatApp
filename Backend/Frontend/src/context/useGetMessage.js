@@ -13,7 +13,7 @@ const useGetMessage = () => {
           const res = await axios.get(
             `/api/message/get/${selectedConversation._id}`
           );
-          
+
           setMessage(Array.isArray(res.data) ? res.data : []);
           setLoading(false);
         } catch (error) {

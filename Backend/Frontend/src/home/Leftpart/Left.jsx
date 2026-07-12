@@ -41,7 +41,6 @@ function Left() {
     <div className="w-full md:w-full bg-themeBgSecondary text-themeTextPrimary h-screen flex flex-col relative border-r border-themeBorder">
       {/* Header */}
       <div className="flex justify-between items-center p-4 border-b border-themeBorder bg-themeBgHeader">
-        
         {/* User Info & Title */}
         <div className="flex items-center space-x-3">
           {/* Clickable Profile Avatar */}
@@ -51,7 +50,11 @@ function Left() {
             title="Edit Profile"
           >
             {user.avatar ? (
-              <img src={user.avatar} alt="Me" className="w-full h-full object-cover" />
+              <img
+                src={user.avatar}
+                alt="Me"
+                className="w-full h-full object-cover"
+              />
             ) : (
               getInitials(user.fullname)
             )}
@@ -83,12 +86,14 @@ function Left() {
 
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1">
         <Users searchQuery={searchQuery} />
       </div>
 
       {/* Profile Settings Modal Overlay */}
-      {isProfileOpen && <ProfileModal onClose={() => setIsProfileOpen(false)} />}
+      {isProfileOpen && (
+        <ProfileModal onClose={() => setIsProfileOpen(false)} />
+      )}
     </div>
   );
 }

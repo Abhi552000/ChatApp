@@ -9,7 +9,9 @@ export const sendOTPEmail = async (email, fullname, otp) => {
   const sanitizedEmail = email ? email.trim().toLowerCase() : "";
   const sanitizedFullname = fullname ? fullname.trim() : "";
 
-  console.log(`[sendOTPEmail] Attempting to send OTP: "${otp}" to "${sanitizedEmail}" (Fullname: "${sanitizedFullname}")`);
+  console.log(
+    `[sendOTPEmail] Attempting to send OTP: "${otp}" to "${sanitizedEmail}" (Fullname: "${sanitizedFullname}")`
+  );
 
   if (resendApiKey) {
     try {
@@ -43,7 +45,9 @@ export const sendOTPEmail = async (email, fullname, otp) => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log(`Verification OTP email sent via Resend API to ${sanitizedEmail}`);
+        console.log(
+          `Verification OTP email sent via Resend API to ${sanitizedEmail}`
+        );
         return true;
       }
       console.error("Resend API error response:", data);
@@ -62,8 +66,8 @@ export const sendOTPEmail = async (email, fullname, otp) => {
           pass: emailPass,
         },
         connectionTimeout: 5000, // 5 seconds
-        greetingTimeout: 5000,   // 5 seconds
-        socketTimeout: 5000,     // 5 seconds
+        greetingTimeout: 5000, // 5 seconds
+        socketTimeout: 5000, // 5 seconds
       });
 
       const mailOptions = {
@@ -97,8 +101,9 @@ export const sendOTPEmail = async (email, fullname, otp) => {
 
   // 3. Dev Fallback: If no API key and no SMTP credentials, or if both failed
   console.log(`\n==================================================`);
-  console.log(`[DEV FALLBACK] Verification OTP for ${sanitizedEmail} (${sanitizedFullname}) is: ${otp}`);
+  console.log(
+    `[DEV FALLBACK] Verification OTP for ${sanitizedEmail} (${sanitizedFullname}) is: ${otp}`
+  );
   console.log(`==================================================\n`);
   return true;
 };
-

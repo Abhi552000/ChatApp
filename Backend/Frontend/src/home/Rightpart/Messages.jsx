@@ -11,14 +11,16 @@ function Messages() {
   const { socket } = useSocketContext();
   const { selectedConversation } = useConversation();
 
-  const lastMsgRef = useRef();
+  const containerRef = useRef();
 
   useEffect(() => {
-    setTimeout(() => {
-      lastMsgRef.current?.scrollIntoView({
-        behavior: "smooth",
-      });
-    }, 100);
+    if (containerRef.current) {
+      setTimeout(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+      }, 50);
+    }
   }, [messages]);
 
   // NEW: emit seen event
@@ -33,7 +35,7 @@ function Messages() {
   const groupMessagesByDate = (msgList) => {
     const groups = {};
     if (!Array.isArray(msgList)) return groups;
-    
+
     msgList.forEach((msg) => {
       const dateKey = new Date(msg.createdAt).toDateString();
       if (!groups[dateKey]) {
@@ -66,7 +68,10 @@ function Messages() {
   const grouped = groupMessagesByDate(messages);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-themeBgPrimary">
+    <div
+      ref={containerRef}
+      className="flex-1 overflow-y-auto p-4 space-y-4 bg-themeBgPrimary"
+    >
       {loading ? (
         <Loading />
       ) : Array.isArray(messages) && messages.length > 0 ? (
@@ -80,12 +85,11 @@ function Messages() {
                   {formatDateLabel(dateKey)}
                 </span>
               </div>
-              
+
               {/* Group Messages */}
               {dateMessages.map((message) => {
-                const isLast = message._id === messages[messages.length - 1]._id;
                 return (
-                  <div key={message._id} ref={isLast ? lastMsgRef : null}>
+                  <div key={message._id}>
                     <Message message={message} />
                   </div>
                 );

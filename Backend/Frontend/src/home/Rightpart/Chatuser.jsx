@@ -38,17 +38,17 @@ function Chatuser() {
 
   const formatLastSeen = (lastSeenDate) => {
     if (!lastSeenDate) return "Offline";
-    
+
     const date = new Date(lastSeenDate);
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    
+
     const timeString = date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     });
-    
+
     if (date.toDateString() === today.toDateString()) {
       return `Last seen today at ${timeString}`;
     } else if (date.toDateString() === yesterday.toDateString()) {
@@ -56,7 +56,7 @@ function Chatuser() {
     } else {
       const diffTime = Math.abs(today - date);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
+
       if (diffDays < 7) {
         return `Last seen ${diffDays} days ago`;
       } else {
@@ -64,7 +64,7 @@ function Chatuser() {
           year: "numeric",
           month: "short",
           day: "numeric",
-        })}`;
+        })}`;π
       }
     }
   };
@@ -81,7 +81,11 @@ function Chatuser() {
       <div className="relative">
         <div className="w-12 h-12 rounded-full overflow-hidden bg-themeBgSecondary flex items-center justify-center text-themeTextPrimary font-bold border border-themeBorder">
           {selectedConversation.avatar ? (
-            <img src={selectedConversation.avatar} alt={selectedConversation.fullname} className="w-full h-full object-cover" />
+            <img
+              src={selectedConversation.avatar}
+              alt={selectedConversation.fullname}
+              className="w-full h-full object-cover"
+            />
           ) : (
             getInitials(selectedConversation.fullname)
           )}
@@ -101,7 +105,9 @@ function Chatuser() {
           <span className="text-xs text-green-500 font-medium">typing...</span>
         ) : (
           <span className="text-xs text-themeTextSecondary">
-            {isOnline ? "Online" : formatLastSeen(selectedConversation.lastSeen)}
+            {isOnline
+              ? "Online"
+              : formatLastSeen(selectedConversation.lastSeen)}
           </span>
         )}
       </div>

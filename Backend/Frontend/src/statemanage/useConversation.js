@@ -11,18 +11,14 @@ const useConversation = create((set) => ({
   setMessage: (messages) =>
     set((state) => ({
       messages:
-        typeof messages === "function"
-          ? messages(state.messages)
-          : messages,
+        typeof messages === "function" ? messages(state.messages) : messages,
     })),
 
   allUsers: [],
   setAllUsers: (allUsers) =>
     set((state) => ({
       allUsers:
-        typeof allUsers === "function"
-          ? allUsers(state.allUsers)
-          : allUsers,
+        typeof allUsers === "function" ? allUsers(state.allUsers) : allUsers,
     })),
 }));
 
