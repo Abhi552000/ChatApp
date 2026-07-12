@@ -13,7 +13,7 @@ const io = new Server(server, {
       "https://chatterbox-9aw1.onrender.com",
       "http://localhost:5173",
       "http://localhost:3001",
-      "http://localhost:5002"
+      "http://localhost:5002",
     ],
     methods: ["GET", "POST"],
   },

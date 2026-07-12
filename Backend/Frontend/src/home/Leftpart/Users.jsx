@@ -13,8 +13,12 @@ function Users({ searchQuery = "" }) {
 
   // Sort chats: those with the most recent messages go to the top
   const sortedUsers = [...filteredUsers].sort((a, b) => {
-    const timeA = a.lastMessage ? new Date(a.lastMessage.createdAt).getTime() : 0;
-    const timeB = b.lastMessage ? new Date(b.lastMessage.createdAt).getTime() : 0;
+    const timeA = a.lastMessage
+      ? new Date(a.lastMessage.createdAt).getTime()
+      : 0;
+    const timeB = b.lastMessage
+      ? new Date(b.lastMessage.createdAt).getTime()
+      : 0;
     return timeB - timeA; // Descending order (latest message on top)
   });
 

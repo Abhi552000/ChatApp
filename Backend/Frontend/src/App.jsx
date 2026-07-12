@@ -16,14 +16,12 @@ function ChatLayout() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-themeBgPrimary text-themeTextPrimary">
-
       {/* Desktop logout sidebar */}
       <div className="hidden lg:flex">
         <Logout />
       </div>
 
       <div className="flex w-full">
-
         {/* USERS LIST */}
         <div
           className={`
@@ -43,7 +41,6 @@ function ChatLayout() {
         >
           <Right />
         </div>
-
       </div>
     </div>
   );
@@ -65,7 +62,11 @@ function App() {
           path="/"
           element={
             authUser ? (
-              authUser.user.isVerified ? <ChatLayout /> : <Navigate to="/verify-otp" />
+              authUser.user.isVerified ? (
+                <ChatLayout />
+              ) : (
+                <Navigate to="/verify-otp" />
+              )
             ) : (
               <Navigate to="/login" />
             )
@@ -76,7 +77,11 @@ function App() {
           path="/verify-otp"
           element={
             authUser ? (
-              authUser.user.isVerified ? <Navigate to="/" /> : <VerifyOTP />
+              authUser.user.isVerified ? (
+                <Navigate to="/" />
+              ) : (
+                <VerifyOTP />
+              )
             ) : (
               <Navigate to="/login" />
             )
@@ -87,7 +92,11 @@ function App() {
           path="/login"
           element={
             authUser ? (
-              authUser.user.isVerified ? <Navigate to="/" /> : <Navigate to="/verify-otp" />
+              authUser.user.isVerified ? (
+                <Navigate to="/" />
+              ) : (
+                <Navigate to="/verify-otp" />
+              )
             ) : (
               <Login />
             )
@@ -98,7 +107,11 @@ function App() {
           path="/signup"
           element={
             authUser ? (
-              authUser.user.isVerified ? <Navigate to="/" /> : <Navigate to="/verify-otp" />
+              authUser.user.isVerified ? (
+                <Navigate to="/" />
+              ) : (
+                <Navigate to="/verify-otp" />
+              )
             ) : (
               <Signup />
             )
