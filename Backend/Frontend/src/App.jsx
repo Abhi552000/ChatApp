@@ -1,6 +1,7 @@
 import React from "react";
 import Left from "./home/Leftpart/Left";
 import Right from "./home/Rightpart/Right";
+import axios from "axios";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import VerifyOTP from "./components/VerifyOTP";
@@ -53,7 +54,15 @@ function App() {
   React.useEffect(() => {
     const currentTheme = localStorage.getItem("theme") || "dark";
     document.documentElement.setAttribute("data-theme", currentTheme);
-  }, []);
+
+    // If we have a cached user session, verify its validity on server boot
+    if (authUser) {
+      axios.get("/api/user/allusers", { credentials: "include" })
+        .catch((err) => {
+          console.warn("Session check failed on boot:", err);
+        });
+    }
+  }, [authUser]);
 
   return (
     <>
